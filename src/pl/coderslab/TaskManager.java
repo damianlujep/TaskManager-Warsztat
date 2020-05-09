@@ -5,14 +5,60 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class TaskManager {
 
     public static void main(String[] args) {
-        String[][] tasks = tasks();
-        System.out.println(Arrays.deepToString(tasks));
 
+        selectAnOption();
+
+        try(Scanner scanner = new Scanner(System.in)) {
+
+            while (scanner.hasNextLine()) {
+                String userInput = scanner.nextLine();
+
+                    switch (userInput) {
+                        case "add":
+                            System.out.println("Calling method addTask()");
+                            break;
+                        case "remove":
+                            System.out.println("Calling method removeTask()");
+                            break;
+                        case "list":
+                            System.out.println("List of Tasks:");
+                            printTaskList();
+                            break;
+                        case "exit":
+                            System.out.println("Calling method exit()");
+                            System.out.println(ConsoleColors.RED + "Bye, bye.");
+                            System.exit(0);
+                            break;
+                        default:
+                            System.out.println("Please select a correct option");
+                    }
+                    System.out.println();
+                    selectAnOption();
+            }
+
+        }catch (InputMismatchException e){
+            System.out.println("Please select a correct option");
+        }
+    }
+
+    public static void printTaskList (){
+        String[][] tasks = tasks();
+
+        int counter = 0;
+        for (int row = 0; row < tasks.length; row++){
+            System.out.print(counter + " : ");
+            for (int column = 0; column < tasks[row].length; column++){
+                System.out.print(tasks[row][column] + " ");
+            }
+            System.out.println();
+            counter++;
+        }
     }
 
     private static String [][] tasks(){
